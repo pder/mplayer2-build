@@ -1,0 +1,13 @@
+#!/bin/sh
+set -e
+mydir="$(pwd)"
+if test ! -e mplayer_options ; then touch mplayer_options ; fi
+if test ! -e common_options ; then touch mplayer_options ; fi
+cd "$mydir"/mplayer
+
+# The --extra-cflags and --extra-ldflags parameters should not be necessary
+# to find the libraries, but they're there to ensure those directories
+# appear first in the search path in case there's another version of the
+# library installed on the system.
+
+PKG_CONFIG_PATH="$mydir/build_libs/lib/pkgconfig:$PKG_CONFIG_PATH" ./configure --extra-cflags="-I$mydir/build_libs/include" --extra-ldflags="-L$mydir/build_libs/lib" `cat ../common_options` `cat ../mplayer_options`

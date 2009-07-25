@@ -1,0 +1,8 @@
+#!/bin/sh
+set -e
+mkdir -p ffmpeg_build
+mydir="$(pwd)"
+if test ! -e ffmpeg_options ; then touch ffmpeg_options ; fi
+if test ! -e common_options ; then touch common_options ; fi
+cd "$mydir"/ffmpeg_build
+"$mydir"/ffmpeg/configure --prefix="$mydir"/build_libs --enable-gpl --cpu=native --disable-debug --enable-pthreads --disable-shared --enable-static --enable-postproc --disable-devices --disable-protocols --disable-ffmpeg --disable-ffplay --disable-ffserver `cat ../common_options` `cat ../ffmpeg_options`

@@ -1,0 +1,4 @@
+#!/bin/sh
+set -e
+git pull
+MPBUILD_COMMAND='git submodule update --init' "`pwd`"/script/foreach_submodule nottop
