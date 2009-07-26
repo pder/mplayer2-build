@@ -1,0 +1,52 @@
+#!/bin/sh
+set -e
+
+# Use a depth greater than 1 for shallow clones to reduce the chance that
+# required submodule versions are not fetched when all branch heads in the
+# corresponding repo have moved ahead.
+
+for ac_option do
+case "$ac_option" in
+  --shallow)
+    clone_flags="--depth 100"
+    ;;
+  *)
+    echo "Unknown parameter: $ac_option"
+    exit 1
+    ;;
+
+esac
+done
+
+# Do things manually instead of using "git submodule update --init",
+# because git's sucky submodule support has no way of giving options to
+# the "git clone" command that would be needed for shallow clones.
+
+git submodule init
+
+submodule_clone() {
+  if test ! -e $1/.git ; then
+    git clone $clone_flags `git config --get submodule.$1.url` $1
+    git submodule update --no-fetch $1
+  else
+    git submodule sync $1
+    git submodule update $1
+  fi
+}
+
+submodule_clone mplayer
+
+if test -e ffmpeg-mt-enabled ; then
+  submodule_clone ffmpeg-mt
+else
+  submodule_clone ffmpeg
+fi
+
+submodule_clone libass
+
+# Ensure sync, needed at least if both ffmpeg and ffmpeg-mt exist separately
+MPBUILD_COMMAND='git submodule sync' "`pwd`"/script/foreach_submodule
+
+# Init recursive submodules (libswscale under ffmpeg) - not trying to
+# make this support shallow clones for now
+MPBUILD_COMMAND='git submodule update --init' "`pwd`"/script/foreach_submodule nottop
