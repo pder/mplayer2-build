@@ -1,6 +1,7 @@
 This repository contains scripts to help build MPlayer together with
 some dependencies that many platforms will not have a new enough
-version of.
+version of. Currently the scripts probably require git version 1.6.2
+or later.
 
 If you have a multicore machine read about FFmpeg-mt below.
 
