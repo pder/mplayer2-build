@@ -1,52 +1,73 @@
-#!/bin/sh
-set -e
+#!/usr/bin/env python
 
-# Use a depth greater than 1 for shallow clones to reduce the chance that
-# required submodule versions are not fetched when all branch heads in the
-# corresponding repo have moved ahead.
+import os
+from os import path
+import sys
+from optparse import OptionParser
+from subprocess import check_call
 
-for ac_option do
-case "$ac_option" in
-  --shallow)
-    clone_flags="--depth 100"
-    ;;
-  *)
-    echo "Unknown parameter: $ac_option"
-    exit 1
-    ;;
+from script.helpers import run_command, run_foreach_submodule, GitWrapper
 
-esac
-done
+option_helptext = \
+"""# Place each option on its own line. Empty lines and lines starting with '#'
+# are ignored. The options do not need quoting, so you can have for example
+# --extra-libs=-lfoo -lbar
+# (and NOT --extra-libs='-lfoo -lbar').
+"""
 
-# Do things manually instead of using "git submodule update --init",
-# because git's sucky submodule support has no way of giving options to
-# the "git clone" command that would be needed for shallow clones.
+mplayer_options = \
+"""# You can place options for MPlayer configure in this file.
 
-git submodule init
+""" + option_helptext
 
-submodule_clone() {
-  if test ! -e $1/.git ; then
-    git clone $clone_flags `git config --get submodule.$1.url` $1
-    git submodule update --no-fetch $1
-  else
-    git submodule sync $1
-    git submodule update $1
-  fi
-}
+ffmpeg_options = \
+"""# You can place options for FFmpeg configure in this file.
 
-submodule_clone mplayer
+""" + option_helptext
 
-if test -e ffmpeg-mt-enabled ; then
-  submodule_clone ffmpeg-mt
-else
-  submodule_clone ffmpeg
-fi
+common_options = \
+"""# You can place options common for both MPlayer and FFmpeg configure in
+# this file. This mainly makes sense for generic things like --cc.
 
-submodule_clone libass
+""" + option_helptext
 
-# Ensure sync, needed at least if both ffmpeg and ffmpeg-mt exist separately
-MPBUILD_COMMAND='git submodule sync' "`pwd`"/script/foreach_submodule
+def create_helpfile(filename, text):
+    if not path.exists(filename):
+        f = open(filename, 'w')
+        f.write(text)
+        f.close()
 
-# Init recursive submodules (libswscale under ffmpeg) - not trying to
-# make this support shallow clones for now
-MPBUILD_COMMAND='git submodule update --init' "`pwd`"/script/foreach_submodule nottop
+def main():
+    usage = 'usage: %prog [options]'
+    parser = OptionParser(usage=usage)
+    parser.add_option('-s', '--shallow', action='store_true',
+                      help='only shallow git clone (uses less bandwidth)')
+    parser.set_defaults(shallow=False)
+    opts, args = parser.parse_args()
+    if args:
+        parser.print_help()
+        sys.exit(1)
+
+    create_helpfile('mplayer_options', mplayer_options)
+    create_helpfile('ffmpeg_options', ffmpeg_options)
+    create_helpfile('common_options', common_options)
+
+    git = GitWrapper()
+    git.shallow = opts.shallow
+
+    check_call('git submodule init'.split())
+    git.submodule_clone('mplayer')
+    if path.exists('ffmpeg-mt-enabled'):
+        git.submodule_clone('ffmpeg-mt')
+    else:
+        git.submodule_clone('ffmpeg')
+    git.submodule_clone('libass')
+
+    # Ensure sync, needed in addition what's done in submodule_clone() above
+    # at least if both ffmpeg and ffmpeg-mt dirs exist separately
+    run_foreach_submodule('git submodule sync')
+    # Init recursive submodules (libswscale under ffmpeg) - not trying to
+    # make this support shallow clones for now.
+    run_foreach_submodule('git submodule update --init', 'nottop')
+
+main()

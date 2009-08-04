@@ -1,13 +1,36 @@
-#!/bin/sh
-set -e
-mkdir -p ffmpeg_build
-mydir="$(pwd)"
-if test ! -e ffmpeg_options ; then touch ffmpeg_options ; fi
-if test ! -e common_options ; then touch common_options ; fi
-if test -e "$mydir"/ffmpeg-mt-enabled ; then
-  ffmpeg_dir="$mydir"/ffmpeg-mt
-else
-  ffmpeg_dir="$mydir"/ffmpeg
-fi
-cd "$mydir"/ffmpeg_build
-"$ffmpeg_dir"/configure --prefix="$mydir"/build_libs --enable-gpl --cpu=native --disable-debug --enable-pthreads --disable-shared --enable-static --enable-postproc --disable-devices --disable-protocols --disable-ffmpeg --disable-ffplay --disable-ffserver `cat ../common_options` `cat ../ffmpeg_options`
+#!/usr/bin/env python
+
+import os
+from os import path
+from helpers import parse_configfile
+from subprocess import check_call
+
+def main():
+    try:
+        os.mkdir('ffmpeg_build')
+    except:
+        pass
+    mydir = os.getcwd()
+    extra_args = parse_configfile('common_options')
+    extra_args += parse_configfile('ffmpeg_options')
+
+    args = ['--prefix=%s/build_libs' % mydir,
+            '--enable-gpl',
+            '--cpu=native',
+            '--disable-debug',
+            '--enable-pthreads',
+            '--disable-shared', '--enable-static',
+            '--enable-postproc',
+            '--disable-devices', '--disable-protocols', '--disable-ffmpeg',
+            '--disable-ffplay', '--disable-ffserver']
+
+    if os.path.exists('ffmpeg-mt-enabled'):
+        ffmpeg_dir = 'ffmpeg-mt'
+    else:
+        ffmpeg_dir = 'ffmpeg'
+    executable = path.join(mydir, ffmpeg_dir, 'configure')
+
+    os.chdir('ffmpeg_build')
+    check_call([executable] + args + extra_args)
+
+main()

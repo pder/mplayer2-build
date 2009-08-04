@@ -1,3 +1,4 @@
+*.pyc
 /build_libs
 /common_options
 /ffmpeg_options

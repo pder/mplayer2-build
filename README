@@ -1,7 +1,6 @@
 This repository contains scripts to help build MPlayer together with
 some dependencies that many platforms will not have a new enough
-version of. Currently the scripts probably require git version 1.6.2
-or later.
+version of.
 
 If you have a multicore machine read about FFmpeg-mt below.
 
@@ -60,7 +59,7 @@ configure script by placing them in a file called "mplayer_options" in
 this directory. There's a corresponding file called "ffmpeg_options"
 for FFmpeg. Options in file "common_options" will be passed to both
 MPlayer and FFmpeg; this mainly makes sense for generic options like
-"-cc=gcc-4.4'.
+"-cc=gcc-4.4'. Place each option on its own line without any quoting.
 
 
 
