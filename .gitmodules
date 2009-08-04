@@ -6,7 +6,7 @@
 	url = git://repo.or.cz/mplayer.git
 [submodule "libass"]
 	path = libass
-	url = git://greg.geekmind.org/libass.git
+	url = git://repo.or.cz/libass.git
 [submodule "ffmpeg-mt"]
 	path = ffmpeg-mt
 	url = git://repo.or.cz/FFMpeg-mirror/mplayer-patches.git
