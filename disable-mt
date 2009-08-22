@@ -4,7 +4,7 @@ import os
 from os import path
 from subprocess import check_call
 
-from script.helpers import run_foreach_submodule, GitWrapper
+from script.helpers import GitWrapper
 
 def main():
     git = GitWrapper()
@@ -23,6 +23,8 @@ def main():
             cmd = 'git submodule update'.split()
         check_call(cmd + ['ffmpeg'])
         os.chdir('ffmpeg')
-        check_call(cmd)
+        def func(cmd=cmd):
+            check_call(cmd)
+        git.foreach_module(func)
 
 main()

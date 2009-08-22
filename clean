@@ -1,4 +1,13 @@
-#!/bin/sh
-set -e
-rm -rf build_libs ffmpeg_build
-MPBUILD_COMMAND='git clean -x -d -f' "`pwd`"/script/foreach_submodule nottop
+#!/usr/bin/env python
+
+from subprocess import check_call
+from script.helpers import GitWrapper
+
+def main():
+    git = GitWrapper()
+    check_call('rm -rf build_libs ffmpeg_build'.split())
+    def cmd():
+        check_call('git clean -x -d -f'.split())
+    git.foreach_submodule(cmd)
+
+main()
