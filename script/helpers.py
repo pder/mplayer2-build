@@ -67,7 +67,7 @@ class GitWrapper(object):
             check_call('git submodule update'.split() + nofetch_args + [name])
 
     def get_config(self):
-        output = run_command('git config --list --null')
+        output = run_command('git config --null --list')
         result = {}
         for line in output.split(chr(0)):
             if not line:
