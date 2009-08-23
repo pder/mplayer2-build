@@ -5,7 +5,8 @@ from script.helpers import GitWrapper
 
 def main():
     git = GitWrapper()
-    check_call('rm -rf build_libs ffmpeg_build'.split())
+    check_call('rm -rf build_libs ffmpeg_build build-stamp configure-stamp'.split())
+    check_call('git clean -x -d -f debian/'.split())
     def cmd():
         check_call('git clean -x -d -f'.split())
     git.foreach_submodule(cmd)
