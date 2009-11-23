@@ -21,7 +21,7 @@ def main():
             '--enable-pthreads',
             '--disable-shared', '--enable-static',
             '--enable-postproc',
-            '--disable-devices', '--disable-protocols', '--disable-ffmpeg',
+            '--disable-devices', '--disable-ffmpeg',
             '--disable-ffplay', '--disable-ffserver',
             '--disable-vaapi']
 
