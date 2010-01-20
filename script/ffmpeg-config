@@ -16,7 +16,7 @@ def main():
 
     args = ['--prefix=%s/build_libs' % mydir,
             '--enable-gpl',
-            '--cpu=native',
+            '--cpu=host',
             '--disable-debug',
             '--enable-pthreads',
             '--disable-shared', '--enable-static',
