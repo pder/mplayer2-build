@@ -28,6 +28,12 @@ ffmpeg_options = \
 common_options = \
 """# You can place options common for both MPlayer and FFmpeg configure in
 # this file. This mainly makes sense for generic things like --cc.
+#
+# NOTE: Several people used --prefix here for some reason. Don't do that!
+# The internal FFmpeg library created during the build is installed under
+# the build tree by default and should not be placed anywhere else!
+# If you want to specify a custom location for the final install that
+# should be done in mplayer_options.
 
 """ + option_helptext
 
