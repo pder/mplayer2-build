@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 
+import sys
 import os
 from os import path
-from helpers import parse_configfile
+from helpers import parse_configfile, run_command
 from subprocess import check_call
 
 def main():
@@ -12,7 +13,21 @@ def main():
         pass
     mydir = os.getcwd()
     extra_args = parse_configfile('common_options')
-    extra_args += parse_configfile('ffmpeg_options')
+    for arg in parse_configfile('ffmpeg_options'):
+        if arg == 'librtmp_magic':
+            try:
+                check_call('pkg-config --exists librtmp'.split())
+            except:
+                sys.exit('You have specified "librtmp_magic" in ffmpeg_options,'
+                         'but running "pkg-config --exists librtmp" failed - '
+                         "can't enable librtmp! Aborting.")
+            extra_args.append('--enable-librtmp')
+            cflags = run_command('pkg-config --cflags librtmp').strip()
+            libs = run_command('pkg-config --libs librtmp').strip()
+            extra_args.append('--extra-cflags=%s' % cflags)
+            extra_args.append('--extra-libs=%s' % libs)
+        else:
+            extra_args.append(arg)
 
     args = ['--prefix=%s/build_libs' % mydir,
             '--enable-gpl',
