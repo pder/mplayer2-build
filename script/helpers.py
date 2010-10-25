@@ -3,6 +3,22 @@ from os import path
 import types
 from subprocess import Popen, PIPE, check_call
 
+# Arch Linux thought it was a good idea to suddenly switch the "python"
+# binary to point to python3...
+version3error = """
+This script is written for Python version 2, but for some reason
+it's being run under incompatible version 3. If you didn't do anything
+yourself to explicitly change the version then the reason is probably
+that your system links plain "python" to "python3" instead of a
+backwards-compatible version. Arch Linux reportedly did this.
+You may be able to make things work by changing the first line of all
+Python scripts from "#!/usr/bin/env python" to "#!/usr/bin/env python2".
+Blame your distro for the inconvenience.
+"""
+import sys
+if sys.version_info > (3,):
+    raise Exception(version3error)
+
 def run_command(args):
     # interpret a string as a whitespace-separated list of executable+arguments
     if isinstance(args, types.StringTypes):
