@@ -8,6 +8,7 @@ from script.helpers import GitWrapper
 
 def main():
     git = GitWrapper()
+    open('ffmpeg-mt-disabled', 'w').close()
     if path.exists('ffmpeg-mt-enabled'):
         os.remove('ffmpeg-mt-enabled')
     # Allow setups where both ffmpeg and ffmpeg-mt are checked out

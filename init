@@ -58,6 +58,14 @@ def main():
     create_helpfile('ffmpeg_options', ffmpeg_options)
     create_helpfile('common_options', common_options)
 
+    # If this looks like a new install enable FFmpeg-mt by default.
+    # The ffmpeg/.git check is to catch updates from old versions with no
+    # explicit ffmpeg-mt-disabled.
+    if not path.exists('ffmpeg-mt-enabled') \
+            and not path.exists('ffmpeg-mt-disabled') \
+            and not path.exists('ffmpeg/.git'):
+        open('ffmpeg-mt-enabled', 'w').close()
+
     git = GitWrapper()
     git.shallow = opts.shallow
 

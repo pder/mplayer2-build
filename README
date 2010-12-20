@@ -2,7 +2,17 @@ This repository contains scripts to help build MPlayer together with
 some dependencies that many platforms will not have a new enough
 version of.
 
-If you have a multicore machine read about FFmpeg-mt below.
+CHANGES FROM EARLIER VERSIONS OF THIS FILE (2010-12-20):
+FFmpeg-mt is now enabled by default in new installs (updating doesn't
+change selection), player selects thread count automatically
+
+Basic use:
+$ ./init --shallow
+$ make -j 6
+$ make install
+You can also run it like "mplayer/mplayer some_file.mkv" without doing
+the last install step.
+For more details see below.
 
 
 
@@ -31,24 +41,18 @@ give configuration options see the section below.
 
 
 
-Enabling FFmpeg-mt
+Enabling or disabling FFmpeg-mt
 
 FFmpeg-mt is version of FFmpeg with improved threading support, useful
 for things like high-bitrate H264. It allows significantly faster
-decoding on multicore machines but is sometimes less stable (it's
-quite usable in most cases though). You can enable compilation with
-FFmpeg-mt decoders using "./enable-mt" and disable it with
-"./disable-mt". To actually use the threading support in your
-mt-enabled MPlayer you need to it a "-lavdopts threads=N" option,
+decoding on multicore machines. It is now enabled by default.
+You can disable compilation with FFmpeg-mt decoders using "./disable-mt"
+and enable it with "./enable-mt". By default MPlayer will try to determine
+the number of cores available on your machine and use that as the number
+of decoding threads. If you want to override that and use a different
+number of threads you can use the "-lavdopts threads=N" option,
 where N is the number of threads you want to use (a value equal to
-your number of cores is normally good). So if you have a quadcore
-machine you can do for example:
-./enable-mt
-./init --shallow
-make -j 6
-mplayer/mplayer -lavdopts threads=4 some_high_bitrate_h264_stuff.mkv
-(or alternatively install first instead of running mplayer from the
-build location on the last line)
+the number of available cores is normally good).
 
 
 
@@ -81,9 +85,10 @@ probably a good idea.
 
 ./enable-mt
 ./disable-mt
-Enabled or disable building with FFmpeg-mt support. Can be run before
-first ./init or later to switch support on and off. The file
-'ffmpeg-mt-enabled' is created or deleted to indicate whether -mt
-support is currently active. Note that if you build MPlayer and then
-switch -mt support on or off, a rebuild is likely to fail unless you
-remember to run ./clean before the new build.
+Enable or disable building with FFmpeg-mt support. Can be run before
+first ./init or later to switch support on and off. The files
+'ffmpeg-mt-enabled' and 'ffmpeg-mt-disabled' are created or deleted to
+indicate whether -mt support is currently active. Note that if you
+build MPlayer and then switch -mt support on or off, a rebuild is
+likely to fail unless you remember to run ./clean before the new
+build.
