@@ -25,4 +25,9 @@ noconfig:
 install:
 	$(MAKE) -C mplayer install
 
-.PHONY: mplayer-config mplayer ffmpeg-config ffmpeg libass-config libass noconfig install
+clean:
+	-rm -rf ffmpeg_build
+	-$(MAKE) -C libass distclean
+	-$(MAKE) -C mplayer distclean
+
+.PHONY: mplayer-config mplayer ffmpeg-config ffmpeg libass-config libass noconfig install clean
