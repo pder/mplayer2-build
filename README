@@ -2,6 +2,13 @@ This repository contains scripts to help build MPlayer together with
 some dependencies that many platforms will not have a new enough
 version of.
 
+If you downloaded the tarball version of the repository then most
+of the sections below do not apply. In that case see only the
+following 3 sections: "Basic use" (leave out the "./init" part, the
+tarball does not need that), "Building" and "Giving configure options
+to MPlayer and FFmpeg".
+
+
 CHANGES FROM EARLIER VERSIONS OF THIS FILE (2010-12-20):
 FFmpeg-mt is now enabled by default in new installs (updating doesn't
 change selection), player selects thread count automatically
