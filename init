@@ -48,7 +48,9 @@ def main():
     parser = OptionParser(usage=usage)
     parser.add_option('-s', '--shallow', action='store_true',
                       help='only shallow git clone (uses less bandwidth)')
-    parser.set_defaults(shallow=False)
+    parser.add_option('--init-optionfiles-only', action='store_true',
+                      help='do nothing but create initial option files')
+    parser.set_defaults(shallow=False, init_optionfiles_only=False)
     opts, args = parser.parse_args()
     if args:
         parser.print_help()
@@ -57,6 +59,8 @@ def main():
     create_helpfile('mplayer_options', mplayer_options)
     create_helpfile('ffmpeg_options', ffmpeg_options)
     create_helpfile('common_options', common_options)
+    if opts.init_optionfiles_only:
+        return
 
     # If this looks like a new install enable FFmpeg-mt by default.
     # The ffmpeg/.git check is to catch updates from old versions with no
