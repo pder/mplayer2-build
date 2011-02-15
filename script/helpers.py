@@ -26,7 +26,7 @@ def run_command(args):
     t = Popen(args, stdout=PIPE)
     stdout = t.communicate()[0]
     if t.returncode != 0:
-        raise OSError("Call %s failed" % args)
+        raise OSError("Call %s failed" % str(args))
     return stdout
 
 class GitWrapper(object):
