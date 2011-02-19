@@ -30,7 +30,8 @@ def export(revision, outdir, mt):
     swscale_rev = subrev(ffmpeg_rev, "libswscale")
     os.chdir('..')
     os.chdir('mplayer')
-    version = run_command('git describe --always ' + mplayer_rev).strip() + '-snapshot'
+    version = run_command('git describe --match v[0-9]* --always ' +
+                          mplayer_rev).strip()
     os.chdir('..')
     write('.', '.', revision, outdir)
     os.putenv('PYTHONDONTWRITEBYTECODE', '1')
