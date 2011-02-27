@@ -1,19 +1,54 @@
 This repository contains scripts to help build MPlayer together with
 some dependencies that many platforms will not have a new enough
-version of.
+version of. This makes it easy to compile the player against
+up-to-date  library versions without needing to manually compile the
+libraries first. More specifically, the scripts first compile FFmpeg
+libraries and libass and then build the player statically linked
+against those.
 
 If you downloaded the tarball version of the repository then most
 of the sections below do not apply. In that case see only the
-following 3 sections: "Basic use" (leave out the "./init" part, the
-tarball does not need that), "Building" and "Giving configure options
-to MPlayer and FFmpeg".
+following sections:
+"Prerequisites"
+"Basic use" (leave out the "./init" part, the tarball does not need that)
+"Building"
+"Giving configure options to MPlayer and FFmpeg".
 
 
 CHANGES FROM EARLIER VERSIONS OF THIS FILE (2010-12-20):
 FFmpeg-mt is now enabled by default in new installs (updating doesn't
 change selection), player selects thread count automatically
 
-Basic use:
+
+
+Prerequisites
+
+This section lists some system packages you need to have installed in
+addition to a basic build environment.
+
+The libass build system requires autotool packages (autoconf,
+automake, libtool).
+FFmpeg needs the Yasm assembler.
+
+Compiling with full features requires development files for several
+external libraries. Below is a list of some important requirements.
+Libraries specific to particular video output methods
+(you'll want at least one of VDPAU, GL or Xv):
+ - libvdpau (for VDPAU output, best choice for NVIDIA cards)
+ - libGL (OpenGL output)
+ - libXv (XVideo output)
+general:
+ - libasound   (ALSA audio output)
+ - various general X development libraries
+ - libfreetype
+ - libfontconfig
+
+
+
+Basic use
+
+Assuming you have required system components installed, the following
+commands should be enough to build the player:
 $ ./init --shallow
 $ make -j 6
 $ make install
