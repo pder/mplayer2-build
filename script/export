@@ -38,11 +38,16 @@ def export(revision, outdir, mt):
     os.system("cd %s && ./init --init-optionfiles-only" % outdir)
     for name in 'clean disable-mt enable-mt init update'.split():
         os.remove(outdir + '/' + name)
+    numeric_rev = run_command('git rev-parse ' + revision)
+    f = open(outdir + '/wrapper_export_version', 'w')
+    f.write(numeric_rev)
+    f.close()
     write('mplayer', "mplayer", mplayer_rev, outdir)
     f = open(outdir + '/mplayer/snapshot_version', 'w')
     f.write(version)
     f.close()
     write('libass', "libass", libass_rev, outdir)
+    os.system("cd %s/libass && autoreconf -ivf" % outdir)
     write(local_ffmpeg, ffmpeg, ffmpeg_rev, outdir)
     write(local_ffmpeg + '/libswscale', ffmpeg + '/libswscale', swscale_rev,
           outdir)

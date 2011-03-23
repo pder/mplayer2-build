@@ -1,5 +1,10 @@
 #!/bin/sh
 set -e
 mydir="$(pwd)"
-cd "$mydir"/libass
-./autogen.sh --prefix="$mydir/build_libs" --enable-static --disable-shared
+if test -f "wrapper_export_version" ; then
+  cd "$mydir"/libass
+  ./configure --prefix="$mydir/build_libs" --enable-static --disable-shared
+else
+  cd "$mydir"/libass
+  ./autogen.sh --prefix="$mydir/build_libs" --enable-static --disable-shared
+fi

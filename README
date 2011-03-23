@@ -26,8 +26,9 @@ Prerequisites
 This section lists some system packages you need to have installed in
 addition to a basic build environment.
 
-The libass build system requires autotool packages (autoconf,
-automake, libtool).
+The libass build system uses autotool packages (autoconf, automake, libtool).
+If you compile from git you must have those installed; tarball exports
+contain pregenerated files and those are not necessary.
 FFmpeg needs the Yasm assembler.
 
 Compiling with full features requires development files for several
