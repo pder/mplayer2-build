@@ -1,12 +1,32 @@
 #!/usr/bin/env python
 
+import os
 from os import path
 from subprocess import check_call
 
-from helpers import GitWrapper
+from helpers import GitWrapper, run_command
 
 def main():
     git = GitWrapper()
+
+    # Currently only ffmpeg-mt is supported. When upgrading from
+    # previous versions force it enabled.
+    switch_to_mt = not path.exists('ffmpeg-mt-enabled')
+    if switch_to_mt:
+        open('ffmpeg-mt-enabled', 'w').close()
+        if path.exists('ffmpeg-mt-disabled'):
+            os.remove('ffmpeg-mt-disabled')
+        # Allow setups where both ffmpeg and ffmpeg-mt are checked out
+        # simultaneously, and leave the directories alone in that case.
+        if path.exists('ffmpeg/.git') and not path.exists('ffmpeg-mt/.git'):
+            # fmpeg-mt should be an empty directory if things are right
+            os.rmdir('ffmpeg-mt')
+            os.rename('ffmpeg', 'ffmpeg-mt')
+            os.mkdir('ffmpeg')
+    # libswscale has changed from a submodule to a normal subdirectory
+    if path.exists('ffmpeg-mt/libswscale/.git'):
+        os.system('cd ffmpeg-mt && rm -rf libswscale')
+
     config = git.get_config()
     submodules = git.get_submodules()
     # Update existing submodules, but don't check out new ones
@@ -19,5 +39,12 @@ def main():
     def cmd():
         check_call('git submodule update --init'.split())
     git.foreach_submodule(cmd)
+
+    if switch_to_mt:
+        print
+        print "Currently only ffmpeg-mt version is maintained."
+        print "This repository has been automatically switched from ffmpeg to ffmpeg-mt."
+        print "This should work OK on single-core machines too."
+        print "You should run ./clean before recompiling due to the switch."
 
 main()
