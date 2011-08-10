@@ -37,7 +37,7 @@ def main():
             '--disable-shared', '--enable-static',
             '--enable-postproc',
             '--disable-devices', '--disable-ffmpeg',
-            '--disable-ffplay', '--disable-ffserver','--disable-ffprobe',
+            '--disable-avplay', '--disable-avserver','--disable-avprobe',
             '--disable-vaapi']
 
     if os.path.exists('ffmpeg-mt-enabled'):
