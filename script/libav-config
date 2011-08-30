@@ -36,9 +36,12 @@ def main():
             '--enable-pthreads',
             '--disable-shared', '--enable-static',
             '--enable-postproc',
-            '--disable-devices', '--disable-ffmpeg', '--disable-avconv',
-            '--disable-avplay', '--disable-avserver','--disable-avprobe',
-            '--disable-vaapi']
+            '--disable-devices', '--disable-vaapi']
+    executables = 'avconv ffmpeg avplay ffplay avserver ffserver ' \
+                  'avprobe ffprobe'.split()
+    for name in executables:
+        if path.exists(path.join('libav', name + '.c')):
+            args.append('--disable-' + name)
 
     executable = path.join(mydir, 'libav', 'configure')
 
