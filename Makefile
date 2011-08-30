@@ -1,15 +1,15 @@
-mplayer: ffmpeg libass
+mplayer: libav libass
 	script/mplayer-config
 	$(MAKE) -C mplayer
 
 mplayer-config:
 	script/mplayer-config
 
-ffmpeg-config:
-	script/ffmpeg-config
+libav-config:
+	script/libav-config
 
-ffmpeg: ffmpeg-config
-	$(MAKE) -C ffmpeg_build install
+libav: libav-config
+	$(MAKE) -C libav_build install
 
 libass-config:
 	script/libass-config
@@ -18,7 +18,7 @@ libass: libass-config
 	$(MAKE) -C libass install
 
 noconfig:
-	$(MAKE) -C ffmpeg_build install
+	$(MAKE) -C libav_build install
 	$(MAKE) -C libass install
 	$(MAKE) -C mplayer
 
@@ -26,8 +26,8 @@ install:
 	$(MAKE) -C mplayer install
 
 clean:
-	-rm -rf ffmpeg_build
+	-rm -rf libav_build
 	-$(MAKE) -C libass distclean
 	-$(MAKE) -C mplayer distclean
 
-.PHONY: mplayer-config mplayer ffmpeg-config ffmpeg libass-config libass noconfig install clean
+.PHONY: mplayer-config mplayer libav-config libav libass-config libass noconfig install clean

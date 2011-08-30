@@ -4,59 +4,46 @@ import os
 from helpers import run_command
 from optparse import OptionParser
 
-def write(local_path, path, revision, outdir):
-    if os.system("(cd %s && git archive --format=tar --prefix=%s/ %s | (cd %s && tar xf -))" % (local_path, path, revision, outdir)) != 0:
+def write(path, revision, outdir):
+    if os.system("(cd %s && git archive --format=tar --prefix=%s/ %s | (cd %s && tar xf -))" % (path, path, revision, outdir)) != 0:
         raise OSError
 
 def subrev(revision, name):
     return run_command(("git", "ls-tree", revision, name)).split()[2]
 
-def export(revision, outdir, mt):
+def export(revision, outdir):
     os.mkdir(outdir)
-    if mt:
-        ffmpeg = "ffmpeg-mt"
-        open(outdir + '/ffmpeg-mt-enabled', 'w').close()
-    else:
-        ffmpeg = "ffmpeg"
-        open(outdir + '/ffmpeg-mt-disabled', 'w').close()
-    if os.path.exists('ffmpeg-mt-enabled'):
-        local_ffmpeg = 'ffmpeg-mt'
-    else:
-        local_ffmpeg = 'ffmpeg'
     mplayer_rev = subrev(revision, "mplayer")
     libass_rev = subrev(revision, "libass")
-    ffmpeg_rev = subrev(revision, ffmpeg)
+    libav_rev = subrev(revision, "libav")
     os.chdir('mplayer')
     version = run_command('git describe --match v[0-9]* --always ' +
                           mplayer_rev).strip()
     os.chdir('..')
-    write('.', '.', revision, outdir)
+    write('.', revision, outdir)
     os.putenv('PYTHONDONTWRITEBYTECODE', '1')
     os.system("cd %s && ./init --init-optionfiles-only" % outdir)
-    for name in 'clean disable-mt enable-mt init update'.split():
+    for name in 'clean init update'.split():
         os.remove(outdir + '/' + name)
     numeric_rev = run_command('git rev-parse ' + revision)
     f = open(outdir + '/wrapper_export_version', 'w')
     f.write(numeric_rev)
     f.close()
-    write('mplayer', "mplayer", mplayer_rev, outdir)
+    write('mplayer', mplayer_rev, outdir)
     f = open(outdir + '/mplayer/snapshot_version', 'w')
     f.write(version)
     f.close()
-    write('libass', "libass", libass_rev, outdir)
+    write('libass', libass_rev, outdir)
     os.system("cd %s/libass && autoreconf -ivf" % outdir)
-    write(local_ffmpeg, ffmpeg, ffmpeg_rev, outdir)
+    write('libav', libav_rev, outdir)
 
 
 def main():
     usage = "usage: [options] revision outdir"
     parser = OptionParser(usage=usage)
-    parser.add_option('--disable-mt', action='store_false', dest="mt",
-                      help='use non-mt FFmpeg')
-    parser.set_defaults(mt=True)
     options, args = parser.parse_args()
     if len(args) != 2:
         parser.error("incorrect number of arguments")
-    export(args[0], args[1], options.mt)
+    export(args[0], args[1])
 
 main()

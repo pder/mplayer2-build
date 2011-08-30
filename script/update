@@ -9,23 +9,31 @@ from helpers import GitWrapper, run_command
 def main():
     git = GitWrapper()
 
-    # Currently only ffmpeg-mt is supported. When upgrading from
-    # previous versions force it enabled.
-    switch_to_mt = not path.exists('ffmpeg-mt-enabled')
-    if switch_to_mt:
-        open('ffmpeg-mt-enabled', 'w').close()
-        if path.exists('ffmpeg-mt-disabled'):
-            os.remove('ffmpeg-mt-disabled')
-        # Allow setups where both ffmpeg and ffmpeg-mt are checked out
-        # simultaneously, and leave the directories alone in that case.
-        if path.exists('ffmpeg/.git') and not path.exists('ffmpeg-mt/.git'):
-            # fmpeg-mt should be an empty directory if things are right
-            os.rmdir('ffmpeg-mt')
-            os.rename('ffmpeg', 'ffmpeg-mt')
-            os.mkdir('ffmpeg')
-    # libswscale has changed from a submodule to a normal subdirectory
-    if path.exists('ffmpeg-mt/libswscale/.git'):
-        os.system('cd ffmpeg-mt && rm -rf libswscale')
+    # Update from versions using a submodule name different from "libav"
+    p = None
+    if path.exists('ffmpeg-mt/.git'):
+        p = 'ffmpeg-mt'
+    else:
+        p = 'ffmpeg'
+    switch_to_libav = not path.exists('libav/.git') and p
+    if switch_to_libav:
+        if p == 'ffmpeg-mt' and path.exists('ffmpeg-mt/libswscale/.git'):
+            # Update from old version with libswscale as submodule
+            os.system('cd ffmpeg-mt && rm -rf libswscale')
+        os.rename(p, 'libav')
+        try:
+            # Rename the build dir mainly to get it cleaned up -
+            # incremental builds probably won't work due to wrong absolute
+            # paths recorded in .d files.
+            os.rename('ffmpeg_build', 'libav_build')
+        except:
+            pass
+        if path.exists('ffmpeg_options') and not path.exists('libav_options'):
+            os.rename('ffmpeg_options', 'libav_options')
+        for fname in ('ffmpeg-mt-enabled', 'ffmpeg-mt-disabled'):
+            if path.exists(fname):
+                os.remove(fname)
+        check_call('git submodule init libav'.split())
 
     config = git.get_config()
     submodules = git.get_submodules()
@@ -40,11 +48,12 @@ def main():
         check_call('git submodule update --init'.split())
     git.foreach_submodule(cmd)
 
-    if switch_to_mt:
+    if switch_to_libav:
         print
-        print "Currently only ffmpeg-mt version is maintained."
-        print "This repository has been automatically switched from ffmpeg to ffmpeg-mt."
-        print "This should work OK on single-core machines too."
+        print "The ffmpeg-mt submodule directory has been renamed to libav."
+        print "The contents of the submodule have already been based on"
+        print "the Libav project for some time (FFmpeg-mt was merged to it)."
+        print "The ffmpeg_options file has been renamed to libav_options."
         print "You should run ./clean before recompiling due to the switch."
 
 main()

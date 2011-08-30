@@ -20,17 +20,17 @@ mplayer_options = \
 
 """ + option_helptext
 
-ffmpeg_options = \
-"""# You can place options for FFmpeg configure in this file.
+libav_options = \
+"""# You can place options for Libav configure in this file.
 
 """ + option_helptext
 
 common_options = \
-"""# You can place options common for both MPlayer and FFmpeg configure in
+"""# You can place options common for both MPlayer and Libav configure in
 # this file. This mainly makes sense for generic things like --cc.
 #
 # NOTE: Several people used --prefix here for some reason. Don't do that!
-# The internal FFmpeg library created during the build is installed under
+# The internal Libav library created during the build is installed under
 # the build tree by default and should not be placed anywhere else!
 # If you want to specify a custom location for the final install that
 # should be done in mplayer_options.
@@ -57,39 +57,17 @@ def main():
         sys.exit(1)
 
     create_helpfile('mplayer_options', mplayer_options)
-    create_helpfile('ffmpeg_options', ffmpeg_options)
+    create_helpfile('libav_options', libav_options)
     create_helpfile('common_options', common_options)
     if opts.init_optionfiles_only:
         return
-
-    # If this looks like a new install enable FFmpeg-mt by default.
-    # The ffmpeg/.git check is to catch updates from old versions with no
-    # explicit ffmpeg-mt-disabled.
-    if not path.exists('ffmpeg-mt-enabled') \
-            and not path.exists('ffmpeg-mt-disabled') \
-            and not path.exists('ffmpeg/.git'):
-        open('ffmpeg-mt-enabled', 'w').close()
 
     git = GitWrapper()
     git.shallow = opts.shallow
 
     check_call('git submodule init'.split())
     git.submodule_clone('mplayer')
-    if path.exists('ffmpeg-mt-enabled'):
-        git.submodule_clone('ffmpeg-mt')
-    else:
-        git.submodule_clone('ffmpeg')
+    git.submodule_clone('libav')
     git.submodule_clone('libass')
-
-    # Ensure sync, needed in addition what's done in submodule_clone() above
-    # at least if both ffmpeg and ffmpeg-mt dirs exist separately
-    def cmd():
-        check_call('git submodule sync'.split())
-    git.foreach_module(cmd)
-    # Init recursive submodules (libswscale under ffmpeg) - not trying to
-    # make this support shallow clones for now.
-    def cmd():
-        check_call('git submodule update --init'.split())
-    git.foreach_submodule(cmd)
 
 main()

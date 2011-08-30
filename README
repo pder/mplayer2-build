@@ -1,10 +1,9 @@
-This repository contains scripts to help build MPlayer together with
+This repository contains scripts to help build mplayer2 together with
 some dependencies that many platforms will not have a new enough
 version of. This makes it easy to compile the player against
 up-to-date  library versions without needing to manually compile the
-libraries first. More specifically, the scripts first compile FFmpeg
-libraries and libass and then build the player statically linked
-against those.
+libraries first. More specifically, the scripts first compile Libav
+and libass and then build the player statically linked against those.
 
 If you downloaded the tarball version of the repository then most
 of the sections below do not apply. In that case see only the
@@ -12,10 +11,14 @@ following sections:
 "Prerequisites"
 "Basic use" (leave out the "./init" part, the tarball does not need that)
 "Building"
-"Giving configure options to MPlayer and FFmpeg".
+"Giving configure options to mplayer2 and Libav".
 
-
-CHANGES FROM EARLIER VERSIONS OF THIS FILE (2010-12-20):
+CHANGES FROM EARLIER VERSIONS OF THIS FILE (2011-08-30):
+Changed mentions of FFmpeg-mt/FFmpeg to Libav and removed the separate
+documentation of threading. Libav has the threading support developed in
+FFmpeg-mt, and mplayer2 uses a number of threads equal to CPU cores by
+default.
+(2010-12-20):
 FFmpeg-mt is now enabled by default in new installs (updating doesn't
 change selection), player selects thread count automatically
 
@@ -29,7 +32,7 @@ addition to a basic build environment.
 The libass build system uses autotool packages (autoconf, automake, libtool).
 If you compile from git you must have those installed; tarball exports
 contain pregenerated files and those are not necessary.
-FFmpeg needs the Yasm assembler.
+Libav needs the Yasm assembler.
 
 Compiling with full features requires development files for several
 external libraries. Below is a list of some important requirements.
@@ -70,42 +73,27 @@ or
 The latter form creates only partial git repositories which do not
 have full history data. This reduces the amount of data you need to
 download but reduces the development-related functionality of the
-repositories. If you only want to simply build MPlayer it should
+repositories. If you only want to simply build mplayer2 it should
 usually be enough.
 
 
 
 Building
 
-You can build MPlayer with just 'make'. There is no separate
-configure step because the MPlayer configure depends on included
+You can build mplayer2 with just 'make'. There is no separate
+configure step because the mplayer2 configure depends on included
 library sources being configured _and_ built first. If you want to
 give configuration options see the section below.
 
 
 
-Enabling or disabling FFmpeg-mt
+Giving configure options to mplayer2 and Libav
 
-FFmpeg-mt is version of FFmpeg with improved threading support, useful
-for things like high-bitrate H264. It allows significantly faster
-decoding on multicore machines. It is now enabled by default.
-You can disable compilation with FFmpeg-mt decoders using "./disable-mt"
-and enable it with "./enable-mt". By default MPlayer will try to determine
-the number of cores available on your machine and use that as the number
-of decoding threads. If you want to override that and use a different
-number of threads you can use the "-lavdopts threads=N" option,
-where N is the number of threads you want to use (a value equal to
-the number of available cores is normally good).
-
-
-
-Giving configure options to MPlayer and FFmpeg
-
-You can specify extra options that will be passed to MPlayer's
+You can specify extra options that will be passed to mplayer2's
 configure script by placing them in a file called "mplayer_options" in
-this directory. There's a corresponding file called "ffmpeg_options"
-for FFmpeg. Options in file "common_options" will be passed to both
-MPlayer and FFmpeg; this mainly makes sense for generic options like
+this directory. There's a corresponding file called "libav_options"
+for Libav. Options in file "common_options" will be passed to both
+mplayer2 and Libav; this mainly makes sense for generic options like
 "-cc=gcc-4.4'. Place each option on its own line without any quoting.
 
 
@@ -125,13 +113,3 @@ Download the latest version of the sources.
 Remove all generated or extra files from build directories and
 restore them to their original state. Running this between builds is
 probably a good idea.
-
-./enable-mt
-./disable-mt
-Enable or disable building with FFmpeg-mt support. Can be run before
-first ./init or later to switch support on and off. The files
-'ffmpeg-mt-enabled' and 'ffmpeg-mt-disabled' are created or deleted to
-indicate whether -mt support is currently active. Note that if you
-build MPlayer and then switch -mt support on or off, a rebuild is
-likely to fail unless you remember to run ./clean before the new
-build.

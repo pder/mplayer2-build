@@ -1,12 +1,9 @@
-[submodule "ffmpeg"]
-	path = ffmpeg
-	url = git://repo.or.cz/FFMpeg-mirror/mplayer-patches.git
 [submodule "mplayer"]
 	path = mplayer
 	url = git://repo.or.cz/mplayer.git
 [submodule "libass"]
 	path = libass
 	url = git://repo.or.cz/libass.git
-[submodule "ffmpeg-mt"]
-	path = ffmpeg-mt
+[submodule "libav"]
+	path = libav
 	url = git://repo.or.cz/FFMpeg-mirror/mplayer-patches.git
