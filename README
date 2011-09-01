@@ -13,7 +13,9 @@ following sections:
 "Building"
 "Giving configure options to mplayer2 and Libav".
 
-CHANGES FROM EARLIER VERSIONS OF THIS FILE (2011-08-30):
+CHANGES FROM EARLIER VERSIONS OF THIS FILE (2011-09-01):
+List new libfribidi requirement for latest libass in the Prerequisites section.
+(2011-08-30):
 Changed mentions of FFmpeg-mt/FFmpeg to Libav and removed the separate
 documentation of threading. Libav has the threading support developed in
 FFmpeg-mt, and mplayer2 uses a number of threads equal to CPU cores by
@@ -32,6 +34,7 @@ addition to a basic build environment.
 The libass build system uses autotool packages (autoconf, automake, libtool).
 If you compile from git you must have those installed; tarball exports
 contain pregenerated files and those are not necessary.
+Libass also requires libfribidi development files.
 Libav needs the Yasm assembler.
 
 Compiling with full features requires development files for several
@@ -46,6 +49,7 @@ general:
  - various general X development libraries
  - libfreetype
  - libfontconfig
+ - libfribidi (required by current libass)
 
 
 
