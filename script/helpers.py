@@ -71,7 +71,8 @@ class GitWrapper(object):
             # because git's sucky submodule support has no way of giving
             # options to the "git clone" command that would be needed for
             # shallow clones.
-            repo_addr = run_command('git config --get submodule.%s.url' % name)
+            repo_addr = run_command('git config --get submodule.%s.url'
+                                    % name).strip()
             # old git versions fail to clone over an empty directory
             try:
                 os.rmdir(name)
