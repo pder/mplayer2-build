@@ -1,0 +1,18 @@
+# You can place options for MPlayer configure in this file.
+
+# Place each option on its own line. Empty lines and lines starting with '#'
+# are ignored. The options do not need quoting, so you can have for example
+# --extra-libs=-lfoo -lbar
+# (and NOT --extra-libs='-lfoo -lbar').
+#
+--enable-cross-compile
+--target=arm
+--cc=arm-none-linux-gnueabi-gcc
+--extra-cflags=-I/home/pder/pandora-dev/arm-2011.03/usr/include -mcpu=cortex-a8 -mtune=cortex-a8 -mfpu=neon -mfloat-abi=softfp
+--extra-ldflags=-L/home/pder/pandora-dev/arm-2011.03/usr/lib
+--enable-xv
+--enable-fbdev
+--enable-x11
+--disable-gl
+--disable-vm
+--disable-liba52

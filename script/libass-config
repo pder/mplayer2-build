@@ -3,8 +3,8 @@ set -e
 mydir="$(pwd)"
 if test -f "wrapper_export_version" ; then
   cd "$mydir"/libass
-  ./configure --prefix="$mydir/build_libs" --enable-static --disable-shared
+  ./configure --host=arm-none-linux-gnueabi --prefix="$mydir/build_libs" --enable-static --disable-shared
 else
   cd "$mydir"/libass
-  ./autogen.sh --prefix="$mydir/build_libs" --enable-static --disable-shared
+  ./autogen.sh --host=arm-none-linux-gnueabi --prefix="$mydir/build_libs" --enable-static --disable-shared
 fi
