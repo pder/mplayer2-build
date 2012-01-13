@@ -1,6 +1,6 @@
 [submodule "mplayer"]
 	path = mplayer
-	url = git://repo.or.cz/mplayer.git
+	url = git://github.com/pder/mplayer2.git
 [submodule "libass"]
 	path = libass
 	url = git://repo.or.cz/libass.git
