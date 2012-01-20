@@ -19,3 +19,4 @@
 --enable-dvdnav
 --with-dvdread-config=../build_libs/bin/dvdread-config
 --with-dvdnav-config=../build_libs/bin/dvdnav-config
+--enable-vcd
