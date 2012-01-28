@@ -7,4 +7,4 @@ export LD_LIBRARY_PATH=$(pwd)/lib
 mkdir -p smplayer2
 cp -n smplayer2.ini.default ./smplayer2/smplayer2.ini
 
-./bin/smplayer2
+./bin/smplayer2 "$@"
