@@ -20,3 +20,8 @@
 --with-dvdread-config=../build_libs/bin/dvdread-config
 --with-dvdnav-config=../build_libs/bin/dvdnav-config
 --enable-vcd
+--enable-live
+--enable-jpeg
+--enable-png
+--enable-tv-v4l1
+--enable-tv-v4l2
