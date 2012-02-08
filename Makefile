@@ -2,7 +2,7 @@ VER ?= $(shell git describe)
 PND_MAKE=$(HOME)/pandora-dev/sdk_utils/pnd_make.sh
 STRIP=$(HOME)/pandora-dev/arm-2011.03/bin/arm-none-linux-gnueabi-strip
 
-mplayer: libav libass libdvdread libdvdnav
+mplayer: libav libass libdvdread libdvdnav live
 	script/mplayer-config
 	$(MAKE) -C mplayer
 
@@ -34,6 +34,16 @@ libdvdnav: libdvdnav-config
 	$(MAKE) -C libdvdnav
 	$(MAKE) -C libdvdnav install
 
+live:
+	cp config.pandora live
+	cd live && ./genMakefiles pandora
+	$(MAKE) -C live
+	mkdir -p build_libs/include
+	mkdir -p build_libs/lib
+	find live -name '*.hh' | xargs -I {} install {} build_libs/include
+	find live -name '*.h' | xargs -I {} install {} build_libs/include
+	find live -name '*.a' | xargs -I {} install {} build_libs/lib
+
 noconfig:
 	$(MAKE) -C libav_build install
 	$(MAKE) -C libass install
@@ -63,4 +73,4 @@ pnd:
 	cp -r pandora/* tmp
 	$(PND_MAKE) -p smplayer2_$(VER).pnd -d tmp -x tmp/PXML.xml -i pandora/smplayer.png -c
 
-.PHONY: mplayer-config mplayer libav-config libav libass-config libass libdvdread-config libdvdread libdvdnav-config libdvdnav noconfig install clean
+.PHONY: mplayer-config mplayer libav-config libav libass-config libass libdvdread-config libdvdread libdvdnav-config libdvdnav live noconfig install clean
