@@ -5,6 +5,7 @@ STRIP=$(HOME)/pandora-dev/arm-2011.03/bin/arm-none-linux-gnueabi-strip
 mplayer: libav libass libdvdread libdvdnav live
 	script/mplayer-config
 	$(MAKE) -C mplayer
+	$(MAKE) -C mplayer/DOCS/xml
 
 mplayer-config:
 	script/mplayer-config
@@ -70,6 +71,8 @@ pnd:
 	cp build/src/smplayer2 tmp/bin
 	$(STRIP) tmp/lib/*
 	$(STRIP) tmp/bin/*
+	cp mplayer/DOCS/HTML/en/MPlayer.html tmp
+	groff -mman -Thtml mplayer/DOCS/man/en/mplayer.1 > tmp/mplayer.1.html
 	cp -r pandora/* tmp
 	$(PND_MAKE) -p smplayer2_$(VER).pnd -d tmp -x tmp/PXML.xml -i pandora/smplayer.png -c
 
