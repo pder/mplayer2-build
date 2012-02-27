@@ -26,3 +26,5 @@
 --enable-png
 --enable-tv-v4l1
 --enable-tv-v4l2
+--enable-radio
+--enable-radio-capture
