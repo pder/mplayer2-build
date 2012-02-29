@@ -9,5 +9,4 @@
 --arch=armv7
 --cpu=cortex-a8
 --cross-prefix=arm-none-linux-gnueabi-
---extra-cflags=-I/home/pder/pandora-dev/arm-2011.03/usr/include -mfpu=neon -mfloat-abi=softfp
---extra-ldflags=-L/home/pder/pandora-dev/arm-2011.03/usr/lib
+--extra-cflags=-mfpu=neon -mfloat-abi=softfp

@@ -1,6 +1,6 @@
 VER ?= $(shell git describe)
-PND_MAKE=$(HOME)/pandora-dev/sdk_utils/pnd_make.sh
-STRIP=$(HOME)/pandora-dev/arm-2011.03/bin/arm-none-linux-gnueabi-strip
+PND_MAKE=$(PNDSDK)/../sdk_utils/pnd_make.sh
+STRIP=$(PNDSDK)/bin/arm-none-linux-gnueabi-strip
 
 mplayer: libav libass libdvdread libdvdnav live
 	script/mplayer-config

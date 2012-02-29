@@ -14,6 +14,10 @@ def main():
         mydir, env.get('PKG_CONFIG_PATH', ''))
     env['PKG_CONFIG_PATH'] = PKG_CONFIG_PATH
 
+    PNDSDK = env.get('PNDSDK', '')
+    extra_args.append('--extra-cflags=-I%s/usr/include' % PNDSDK)
+    extra_args.append('--extra-ldflags=-L%s/usr/lib' % PNDSDK)
+
     # The --extra-cflags and --extra-ldflags parameters should not be
     # necessary to find the libraries, but they're there to ensure those
     # directories appear first in the search path in case there's another

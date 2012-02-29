@@ -1,7 +1,5 @@
 --cc=arm-none-linux-gnueabi-gcc
 --extra-cflags=-mcpu=cortex-a8 -mtune=cortex-a8 -mfpu=neon -mfloat-abi=softfp
---extra-ldflags=-L/home/pder/pandora-dev/arm-2011.03/usr/lib
---prefix=/home/pder/projects/pandora/mplayer2-build/build_libs
 --disable-static
 --enable-shared
 --disable-strip

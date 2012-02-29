@@ -29,6 +29,11 @@ def main():
         else:
             extra_args.append(arg)
 
+    env = os.environ.copy()
+    PNDSDK = env.get('PNDSDK', '')
+    extra_args.append('--extra-cflags=-I%s/usr/include' % PNDSDK)
+    extra_args.append('--extra-ldflags=-L%s/usr/lib' % PNDSDK)
+
     args = ['--prefix=%s/build_libs' % mydir,
             '--enable-gpl',
             '--cpu=host',

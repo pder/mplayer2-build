@@ -19,7 +19,8 @@ def main():
     # directories appear first in the search path in case there's another
     # version of the library installed on the system.
 
-    args = ['--extra-cflags=-I%s/build_libs/include' % mydir,
+    args = ['--prefix=%s/build_libs' % mydir,
+            '--extra-cflags=-I%s/build_libs/include' % mydir,
             '--extra-ldflags=-L%s/build_libs/lib' % mydir]
 
     os.chdir('libdvdread')

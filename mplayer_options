@@ -8,8 +8,7 @@
 --enable-cross-compile
 --target=arm
 --cc=arm-none-linux-gnueabi-gcc
---extra-cflags=-I/home/pder/pandora-dev/arm-2011.03/usr/include -mcpu=cortex-a8 -mtune=cortex-a8 -mfpu=neon -mfloat-abi=softfp
---extra-ldflags=-L/home/pder/pandora-dev/arm-2011.03/usr/lib
+--extra-cflags=-mcpu=cortex-a8 -mtune=cortex-a8 -mfpu=neon -mfloat-abi=softfp
 --extra-libs=-lliveMedia -lgroupsock -lUsageEnvironment -lBasicUsageEnvironment -lstdc++
 --enable-xv
 --enable-fbdev
