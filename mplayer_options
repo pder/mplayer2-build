@@ -27,3 +27,6 @@
 --enable-tv-v4l2
 --enable-radio
 --enable-radio-capture
+--enable-radio-v4l2
+--disable-jack
+--disable-pulse
