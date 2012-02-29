@@ -40,7 +40,6 @@ def main():
             '--disable-debug',
             '--enable-pthreads',
             '--disable-shared', '--enable-static',
-            '--enable-postproc',
             '--disable-devices', '--disable-vaapi']
     executables = 'avconv ffmpeg avplay ffplay avserver ffserver ' \
                   'avprobe ffprobe'.split()
