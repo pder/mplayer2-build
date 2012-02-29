@@ -10,3 +10,6 @@
 [submodule "SMPlayer2"]
 	path = SMPlayer2
 	url = git://github.com/lachs0r/SMPlayer2.git
+[submodule "libpostproc"]
+	path = libpostproc
+	url = git://git.videolan.org/libpostproc.git

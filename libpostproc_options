@@ -1,0 +1,12 @@
+# You can place options for libpostproc configure in this file.
+
+# Place each option on its own line. Empty lines and lines starting with '#'
+# are ignored. The options do not need quoting, so you can have for example
+# --extra-libs=-lfoo -lbar
+# (and NOT --extra-libs='-lfoo -lbar').
+#
+--target-os=linux
+--arch=armv7
+--cpu=cortex-a8
+--cross-prefix=arm-none-linux-gnueabi-
+--extra-cflags=-mfpu=neon -mfloat-abi=softfp

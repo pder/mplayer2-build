@@ -2,7 +2,7 @@ VER ?= $(shell git describe)
 PND_MAKE=$(PNDSDK)/../sdk_utils/pnd_make.sh
 STRIP=$(PNDSDK)/bin/arm-none-linux-gnueabi-strip
 
-mplayer: libav libass libdvdread libdvdnav live
+mplayer: libav libpostproc libass libdvdread libdvdnav live
 	script/mplayer-config
 	$(MAKE) -C mplayer
 	$(MAKE) -C mplayer/DOCS/xml
@@ -15,6 +15,12 @@ libav-config:
 
 libav: libav-config
 	$(MAKE) -C libav_build install
+
+libpostproc-config:
+	script/libpostproc-config
+
+libpostproc: libav libpostproc-config
+	$(MAKE) -C libpostproc install
 
 libass-config:
 	script/libass-config
@@ -76,4 +82,4 @@ pnd:
 	cp -r pandora/* tmp
 	$(PND_MAKE) -p smplayer2_$(VER).pnd -d tmp -x tmp/PXML.xml -i pandora/smplayer.png -c
 
-.PHONY: mplayer-config mplayer libav-config libav libass-config libass libdvdread-config libdvdread libdvdnav-config libdvdnav live noconfig install clean
+.PHONY: mplayer-config mplayer libav-config libav libpostproc-config libpostproc libass-config libass libdvdread-config libdvdread libdvdnav-config libdvdnav live noconfig install clean
