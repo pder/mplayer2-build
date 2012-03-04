@@ -1,0 +1,13 @@
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index 17f1caa..f1ff6c0 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -266,6 +266,8 @@ add_executable(smplayer2 WIN32
+ add_dependencies(smplayer2 translations)
+ target_link_libraries(smplayer2 ${smplayer2_LIBS})
+ include_directories(${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR})
++include_directories(../../quazip-0.4.4)
++link_directories($ENV{PNDSDK}/usr/lib)
+ 
+ install(TARGETS smplayer2 RUNTIME DESTINATION bin)
+ install(FILES ${smplayer2_TRANSLATIONS} DESTINATION share/smplayer2/translations)
