@@ -8,6 +8,7 @@
 --enable-cross-compile
 --target=arm
 --cc=arm-none-linux-gnueabi-gcc
+--pkg-config=arm-none-linux-gnueabi-pkg-config
 --extra-cflags=-mcpu=cortex-a8 -mtune=cortex-a8 -mfpu=neon -mfloat-abi=softfp
 --extra-libs=-lliveMedia -lgroupsock -lUsageEnvironment -lBasicUsageEnvironment -lstdc++
 --enable-xv
