@@ -41,6 +41,12 @@ libdvdnav: libdvdnav-config
 	$(MAKE) -C libdvdnav
 	$(MAKE) -C libdvdnav install
 
+libcdio-config:
+	script/libcdio-config
+
+libcdio: libcdio-config
+	$(MAKE) -C libcdio install
+
 live:
 	cp config.pandora live
 	cd live && ./genMakefiles pandora
@@ -82,4 +88,4 @@ pnd:
 	cp -r pandora/* tmp
 	$(PND_MAKE) -p smplayer2_$(VER).pnd -d tmp -x tmp/PXML.xml -i pandora/smplayer.png -c
 
-.PHONY: mplayer-config mplayer libav-config libav libpostproc-config libpostproc libass-config libass libdvdread-config libdvdread libdvdnav-config libdvdnav live noconfig install clean
+.PHONY: mplayer-config mplayer libav-config libav libpostproc-config libpostproc libass-config libass libdvdread-config libdvdread libdvdnav-config libdvdnav libcdio libcdio-config live noconfig install clean
