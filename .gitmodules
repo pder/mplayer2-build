@@ -13,3 +13,6 @@
 [submodule "libpostproc"]
 	path = libpostproc
 	url = git://git.videolan.org/libpostproc.git
+[submodule "libcdio"]
+	path = libcdio
+	url = git://git.sv.gnu.org/libcdio.git
