@@ -1,11 +1,12 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import os
+import sys
 from helpers import run_command
 from optparse import OptionParser
 
 def write(path, revision, outdir):
-    if os.system("(cd %s && git archive --format=tar --prefix=%s/ %s | (cd %s && tar xf -))" % (path, path, revision, outdir)) != 0:
+    if os.system(b"(cd " +path +b" && git archive --format=tar --prefix=" +path +b"/ " +revision + b" | (cd " +outdir + b" && tar xf -))") != 0:
         raise OSError
 
 def subrev(revision, name):
@@ -17,25 +18,23 @@ def export(revision, outdir):
     libass_rev = subrev(revision, "libass")
     libav_rev = subrev(revision, "libav")
     os.chdir('mplayer')
-    version = run_command('git describe --match v[0-9]* --always ' +
+    version = run_command(b'git describe --match v[0-9]* --always ' +
                           mplayer_rev).strip()
     os.chdir('..')
-    write('.', revision, outdir)
+    write(b'.',revision, outdir)
     os.putenv('PYTHONDONTWRITEBYTECODE', '1')
-    os.system("cd %s && ./init --init-optionfiles-only" % outdir)
-    for name in 'clean init update'.split():
-        os.remove(outdir + '/' + name)
-    numeric_rev = run_command('git rev-parse ' + revision)
-    f = open(outdir + '/wrapper_export_version', 'w')
-    f.write(numeric_rev)
-    f.close()
-    write('mplayer', mplayer_rev, outdir)
-    f = open(outdir + '/mplayer/snapshot_version', 'w')
-    f.write(version)
-    f.close()
-    write('libass', libass_rev, outdir)
-    os.system("cd %s/libass && autoreconf -ivf" % outdir)
-    write('libav', libav_rev, outdir)
+    os.system(b"cd " +outdir +b" && ./init --init-optionfiles-only")
+    for name in b'clean init update'.split():
+        os.remove(outdir + b'/' + name)
+    numeric_rev = run_command(b'git rev-parse ' + revision)
+    with open(outdir + b'/wrapper_export_version', 'wb') as f:
+        f.write(numeric_rev)
+    write(b'mplayer', mplayer_rev, outdir)
+    with open(outdir + b'/mplayer/snapshot_version', 'wb') as f:
+        f.write(version)
+    write(b'libass', libass_rev, outdir)
+    os.system(b"cd " +outdir + b"/libass && autoreconf -ivf")
+    write(b'libav', libav_rev, outdir)
 
 
 def main():
@@ -44,6 +43,6 @@ def main():
     options, args = parser.parse_args()
     if len(args) != 2:
         parser.error("incorrect number of arguments")
-    export(args[0], args[1])
+    export(args[0].encode('ascii'), args[1].encode(sys.getfilesystemencoding()))
 
 main()

@@ -1,27 +1,12 @@
+import sys
 import os
 from os import path
 import types
 from subprocess import Popen, PIPE, check_call
 
-# Arch Linux thought it was a good idea to suddenly switch the "python"
-# binary to point to python3...
-version3error = """
-This script is written for Python version 2, but for some reason
-it's being run under incompatible version 3. If you didn't do anything
-yourself to explicitly change the version then the reason is probably
-that your system links plain "python" to "python3" instead of a
-backwards-compatible version. Arch Linux reportedly did this.
-You may be able to make things work by changing the first line of all
-Python scripts from "#!/usr/bin/env python" to "#!/usr/bin/env python2".
-Blame your distro for the inconvenience.
-"""
-import sys
-if sys.version_info > (3,):
-    raise Exception(version3error)
-
 def run_command(args):
     # interpret a string as a whitespace-separated list of executable+arguments
-    if isinstance(args, types.StringTypes):
+    if isinstance(args, (str, bytes)):
         args = args.split()
     t = Popen(args, stdout=PIPE)
     stdout = t.communicate()[0]
@@ -34,16 +19,16 @@ class GitWrapper(object):
         self.shallow = False
         self.supports_nofetch = True
         v = run_command('git --version')
-        prefix = 'git version '
+        prefix = b'git version '
         def error():
             sys.stderr.write('Cannot parse "git --version" output, '
-                             'assuming new version')
+                             'assuming new version\n')
         if not v.startswith(prefix):
             error()
             return
         v = v[len(prefix):]
         try:
-            v = [int(n) for n in v.split('.')[:3]]
+            v = [int(n) for n in v.split(b'.')[:3]]
         except:
             error()
             return
@@ -86,10 +71,10 @@ class GitWrapper(object):
     def get_config(self):
         output = run_command('git config --null --list')
         result = {}
-        for line in output.split(chr(0)):
+        for line in output.split(bytes([0])):
             if not line:
                 continue
-            name, value = line.split('\n', 1)
+            name, value = line.split(b'\n', 1)
             result[name] = value
         return result
 
@@ -98,14 +83,14 @@ class GitWrapper(object):
         result = []
         for line in output.splitlines():
             mode, sha, stage, path = line.split(None, 3)
-            if mode != '160000':
+            if mode != b'160000':
                 continue
             result.append(path)
         return result
 
     def foreach_submodule(self, func, recurse=True):
         for module in self.get_submodules():
-            if path.exists(path.join(module, '.git')):
+            if path.exists(path.join(module, b'.git')):
                 os.chdir(module)
                 func()
                 if recurse:
@@ -121,10 +106,10 @@ def parse_configfile(filename):
     if not path.exists(filename):
         return []
     args = []
-    f = open(filename)
+    f = open(filename, 'rb')
     for line in f:
         line = line.strip()
-        if not line or line.startswith('#'):
+        if not line or line.startswith(b'#'):
             continue
         args.append(line)
     f.close()
