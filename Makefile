@@ -45,6 +45,11 @@ libcdio-config:
 	script/libcdio-config
 
 libcdio: libcdio-config
+	touch libcdio/src/iso-read.1 \
+		  libcdio/src/iso-info.1 \
+		  libcdio/src/cd-read.1 \
+		  libcdio/src/cd-info.1 \
+		  libcdio/src/cd-drive.1
 	$(MAKE) -C libcdio install
 
 live:
