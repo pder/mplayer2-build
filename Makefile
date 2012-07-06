@@ -2,7 +2,7 @@ VER ?= $(shell git describe)
 PND_MAKE=$(PNDSDK)/../sdk_utils/pnd_make.sh
 STRIP=$(PNDSDK)/bin/arm-none-linux-gnueabi-strip
 
-mplayer: libav libpostproc libass libdvdread libdvdnav live
+mplayer: libav libpostproc libass libdvdread libdvdnav live libcdio
 	script/mplayer-config
 	$(MAKE) -C mplayer
 	$(MAKE) -C mplayer/DOCS/xml
