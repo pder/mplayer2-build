@@ -1,6 +1,6 @@
 --cc=arm-none-linux-gnueabi-gcc
 --extra-cflags=-mcpu=cortex-a8 -mtune=cortex-a8 -mfpu=neon -mfloat-abi=softfp
---disable-static
---enable-shared
+--disable-shared
+--enable-static
 --disable-strip
 --with-dvdread-config=../build_libs/bin/dvdread-config

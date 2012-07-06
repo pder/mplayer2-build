@@ -79,14 +79,9 @@ clean:
 
 pnd:
 	rm -rf tmp
-	mkdir -p tmp/lib
 	mkdir -p tmp/bin
-	cp build_libs/lib/libdvdnavmini.so.4 tmp/lib
-	cp build_libs/lib/libdvdnav.so.4 tmp/lib
-	cp build_libs/lib/libdvdread.so.4 tmp/lib
 	cp mplayer/mplayer tmp/bin
 	cp build/src/smplayer2 tmp/bin
-	$(STRIP) tmp/lib/*
 	$(STRIP) tmp/bin/*
 	cp mplayer/DOCS/HTML/en/MPlayer.html tmp
 	groff -mman -Thtml mplayer/DOCS/man/en/mplayer.1 > tmp/mplayer.1.html
