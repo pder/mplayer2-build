@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export PATH=$PNDSDK/usr/bin:$PATH 
+export PATH=$PNDSDK/usr/bin:/usr/local/Trolltech/Qt-4.6.2/bin:$PATH 
 export CFLAGS="-DPANDORA -O2 -pipe -march=armv7-a -mcpu=cortex-a8 -mtune=cortex-a8 -mfpu=neon -ftree-vectorize -mfloat-abi=softfp -ffast-math -fsingle-precision-constant -fno-inline-functions" 
 export CXXFLAGS="-DPANDORA -O2 -pipe -march=armv7-a -mcpu=cortex-a8 -mtune=cortex-a8 -mfpu=neon -ftree-vectorize -mfloat-abi=softfp -ffast-math -fsingle-precision-constant -fno-inline-functions" 
 
