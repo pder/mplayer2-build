@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import sys
 import os
@@ -14,7 +14,7 @@ def main():
     mydir = os.getcwd()
     extra_args = parse_configfile('common_options')
     for arg in parse_configfile('libav_options'):
-        if arg == 'librtmp_magic':
+        if arg == b'librtmp_magic':
             try:
                 check_call('pkg-config --exists librtmp'.split())
             except:
@@ -24,8 +24,8 @@ def main():
             extra_args.append('--enable-librtmp')
             cflags = run_command('pkg-config --cflags librtmp').strip()
             libs = run_command('pkg-config --libs librtmp').strip()
-            extra_args.append('--extra-cflags=%s' % cflags)
-            extra_args.append('--extra-libs=%s' % libs)
+            extra_args.append(b'--extra-cflags=' + cflags)
+            extra_args.append(b'--extra-libs=' + libs)
         else:
             extra_args.append(arg)
 

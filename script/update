@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import os
 from os import path
@@ -39,9 +39,9 @@ def main():
     submodules = git.get_submodules()
     # Update existing submodules, but don't check out new ones
     for p in submodules:
-        if not 'submodule.%s.url' % p in config:
+        if not b'submodule.'+p+b'.url' in config:
             continue
-        if not path.exists(path.join(p, '.git')):
+        if not path.exists(path.join(p, b'.git')):
             continue
         check_call('git submodule update'.split() + [p])
     def cmd():
@@ -49,11 +49,11 @@ def main():
     git.foreach_submodule(cmd)
 
     if switch_to_libav:
-        print
-        print "The ffmpeg-mt submodule directory has been renamed to libav."
-        print "The contents of the submodule have already been based on"
-        print "the Libav project for some time (FFmpeg-mt was merged to it)."
-        print "The ffmpeg_options file has been renamed to libav_options."
-        print "You should run ./clean before recompiling due to the switch."
+        print()
+        print("The ffmpeg-mt submodule directory has been renamed to libav.")
+        print("The contents of the submodule have already been based on")
+        print("the Libav project for some time (FFmpeg-mt was merged to it).")
+        print("The ffmpeg_options file has been renamed to libav_options.")
+        print("You should run ./clean before recompiling due to the switch.")
 
 main()
