@@ -1,0 +1,4 @@
+--host=arm-none-linux-gnueabi
+--disable-static
+--enable-shared
+--disable-doc

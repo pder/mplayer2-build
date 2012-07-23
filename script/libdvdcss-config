@@ -1,0 +1,29 @@
+#!/usr/bin/env python
+
+import os
+from helpers import parse_configfile
+from subprocess import check_call
+
+def main():
+    mydir = os.getcwd()
+    extra_args = parse_configfile('common_options')
+    extra_args += parse_configfile('libdvdcss_options')
+
+    env = os.environ.copy()
+    PKG_CONFIG_PATH = '%s/build_libs/lib/pkgconfig:%s' % (
+        mydir, env.get('PKG_CONFIG_PATH', ''))
+    env['PKG_CONFIG_PATH'] = PKG_CONFIG_PATH
+    env['CFLAGS'] = '-mcpu=cortex-a8 -mtune=cortex-a8 -mfpu=neon -mfloat-abi=softfp'
+
+    # The --extra-cflags and --extra-ldflags parameters should not be
+    # necessary to find the libraries, but they're there to ensure those
+    # directories appear first in the search path in case there's another
+    # version of the library installed on the system.
+
+    args = ['--prefix=%s/build_libs' % mydir]
+
+    os.chdir('libdvdcss')
+    check_call(['./bootstrap'])
+    check_call(['./configure'] + args + extra_args, env=env)
+
+main()

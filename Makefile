@@ -2,7 +2,7 @@ VER ?= $(shell git describe)
 PND_MAKE=$(PNDSDK)/../sdk_utils/pnd_make.sh
 STRIP=$(PNDSDK)/bin/arm-none-linux-gnueabi-strip
 
-mplayer: libav libpostproc libass libdvdread libdvdnav live libcdio
+mplayer: libav libpostproc libass libdvdcss libdvdread libdvdnav live libcdio
 	script/mplayer-config
 	$(MAKE) -C mplayer
 	$(MAKE) -C mplayer/DOCS/xml
@@ -27,6 +27,12 @@ libass-config:
 
 libass: libass-config
 	$(MAKE) -C libass install
+
+libdvdcss-config:
+	script/libdvdcss-config
+
+libdvdcss: libdvdcss-config
+	$(MAKE) -C libdvdcss install
 
 libdvdread-config:
 	script/libdvdread-config
@@ -79,13 +85,16 @@ clean:
 
 pnd:
 	rm -rf tmp
+	mkdir -p tmp/lib
 	mkdir -p tmp/bin
+	cp build_libs/lib/libdvdcss.so.2.1.0 tmp/lib
 	cp mplayer/mplayer tmp/bin
 	cp build/src/smplayer2 tmp/bin
+	$(STRIP) tmp/lib/*
 	$(STRIP) tmp/bin/*
 	cp mplayer/DOCS/HTML/en/MPlayer.html tmp
 	groff -mman -Thtml mplayer/DOCS/man/en/mplayer.1 > tmp/mplayer.1.html
 	cp -r pandora/* tmp
 	$(PND_MAKE) -p smplayer2_$(VER).pnd -d tmp -x tmp/PXML.xml -i pandora/smplayer.png -c
 
-.PHONY: mplayer-config mplayer libav-config libav libpostproc-config libpostproc libass-config libass libdvdread-config libdvdread libdvdnav-config libdvdnav libcdio libcdio-config live noconfig install clean
+.PHONY: mplayer-config mplayer libav-config libav libpostproc-config libpostproc libass-config libass libdvdcss-config libdvdcss libdvdread-config libdvdread libdvdnav-config libdvdnav libcdio-config libcdio live noconfig install clean
