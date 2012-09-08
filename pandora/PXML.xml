@@ -7,7 +7,7 @@
         <descriptions>
             <description lang="en_US">MPlayer2 front end</description>
         </descriptions>
-        <version major="0" minor="0" release="4" build="1"/><!--This programs version-->
+        <version major="0" minor="0" release="5" build="1"/><!--This programs version-->
         <author name="smplayer2 team" website="https://github.com/lachs0r/SMPlayer2"/><!--Optional email and website, name required-->
     </package>
     <application id="smplayer2.pder" appdata="smplayer2">
@@ -19,7 +19,7 @@
         <exec command="smplayer2.sh" x11="req"/>
         <icon src="smplayer.png"/>
         <author name="smplayer2 team" website="https://github.com/lachs0r/SMPlayer2"/><!--Optional email and website, name required-->
-        <version major="0" minor="0" release="4" build="1"/><!--This programs version-->
+        <version major="0" minor="0" release="5" build="1"/><!--This programs version-->
         <licenses>
             <license name="GPLv2+" url="http://www.gnu.org/licenses/gpl-2.0.html" sourcecodeurl="git://github.com/pder/mplayer2-build.git"/>
         </licenses>
