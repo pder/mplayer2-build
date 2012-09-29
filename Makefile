@@ -87,7 +87,7 @@ pnd:
 	rm -rf tmp
 	mkdir -p tmp/lib
 	mkdir -p tmp/bin
-	cp build_libs/lib/libdvdcss.so.2.1.0 tmp/lib
+	cp build_libs/lib/libdvdcss.so.2.1.0 tmp/lib/libdvdcss.so.2
 	cp mplayer/mplayer tmp/bin
 	cp build/src/smplayer2 tmp/bin
 	$(STRIP) tmp/lib/*
