@@ -10,7 +10,6 @@
 --cc=arm-none-linux-gnueabi-gcc
 --pkg-config=arm-none-linux-gnueabi-pkg-config
 --extra-cflags=-mcpu=cortex-a8 -mtune=cortex-a8 -mfpu=neon -mfloat-abi=softfp
---extra-libs=-lliveMedia -lgroupsock -lUsageEnvironment -lBasicUsageEnvironment -lstdc++
 --enable-xv
 --enable-fbdev
 --enable-x11
@@ -21,7 +20,6 @@
 --with-dvdread-config=../build_libs/bin/dvdread-config
 --with-dvdnav-config=../build_libs/bin/dvdnav-config
 --enable-vcd
---enable-live
 --enable-jpeg
 --enable-png
 --enable-tv-v4l1
