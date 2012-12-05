@@ -6,6 +6,7 @@ mplayer: libav libpostproc libass libdvdcss libdvdread libdvdnav libcdio
 	script/mplayer-config
 	$(MAKE) -C mplayer
 	$(MAKE) -C mplayer/DOCS/xml
+	$(MAKE) -C mplayer DOCS/man/en/mplayer.1
 
 mplayer-config:
 	script/mplayer-config
